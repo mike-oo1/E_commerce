@@ -20,13 +20,13 @@ app.use(cors({
     methods: ["GET"]
 }))
 app.use("/Uploads", express.static(__dirname + "/Uploads"))
-app.use("/paymentPictures", express.static(__dirname + "/paymentPictures"))
+// app.use("/paymentPictures", express.static(__dirname + "/paymentPictures"))
 
 app.use("/api",route)
 app.use("/api",router)
 app.use("/api",debitCardRoute)
-const port = process.env.port
-const DB = process.env.Database
+const port = process.env.PORT
+const DB = process.env.DATABASE
 mongoose
 .connect(DB)
 .then(()=>{
