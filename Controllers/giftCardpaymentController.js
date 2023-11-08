@@ -41,6 +41,11 @@ exports.cardPayments = async(req,res)=>{
             message:"price calculated",
             data: "$"+totalPrice 
         })
+        if(totalPrice>500){
+            return res.status(400).json({
+                message:`pls your total is ${totalPrice} pls pay with btc instead`
+            })
+        }
         }
     } catch (error) {
         return res.status(500).json({

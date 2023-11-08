@@ -205,3 +205,45 @@ exports.signOut= async(req,res)=>{
 }
 
 
+exports.getAllUsers=async(req,res)=>{
+    try {
+        const allUsers = await userModel.find()
+        if(!allUsers){
+            return res.status(404).json({
+                message:"users not found"
+            })
+        }else{
+            return res.status(200).json({
+                message:"here are all users",
+                data:allUsers
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message:error.message
+        })
+    }
+}
+
+
+
+exports.getOneUser=async(req,res)=>{
+    try {
+        const id =   req.params.id
+        const getone = await userModel.findById(id)
+        if(!getone){
+            return res.status(404).json({
+                message:`user with id ${id} not found`
+            })
+        }else{
+            return res.status(200).json({
+                message:`here is the user with id ${id}`,
+                data:getone
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message:error.message
+        })
+    }
+}
