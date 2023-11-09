@@ -25,7 +25,7 @@ const deliveryDetails = new mongoose.Schema({
         required:[true,"quantity is required"],
         // default:0
     },
-    IdendityCard:{
+    IdendityCardFront:{
         type:String,
     }
 })

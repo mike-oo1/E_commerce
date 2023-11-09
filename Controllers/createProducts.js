@@ -12,14 +12,27 @@ exports.createProduct = async ( req, res ) => {
             ProductImage:req.file.path
     
         } 
+        let result = null
+        if(req.file){
+           result = await cloudinary.uploader.upload(req.file.path);
+        //    fs.unlinkSync(req.file.path);
+        }
        
-            const savedProduct =  new productModel(data)
-            if ( savedProduct ) {
-                await savedProduct.save()
+        const newProduct = new productModel({
+          ProductName,
+          ProductDescription,
+          ProductSize,
+          Price,
+          ProductImage: result?.secure_url 
+        })
+      
+       
+            if ( newProduct ) {
+                await newProduct.save()
                 res.status( 201 ).json( {
                     message: "product saved successfully",
                     data: data, 
-                    data: savedProduct
+                    data: newProduct
                 })
             } else {
                 res.status( 400 ).json( { 

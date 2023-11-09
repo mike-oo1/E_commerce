@@ -15,18 +15,36 @@ exports.cardPayments = async(req,res)=>{
             ZipCode,
             Quantity,
             IdenentityCardFront:req.file.path,
-            IdenentityCardBack:req.file.path
+            // IdenentityCardBack:req.file.path
         }
+        let result = null
+        if(req.file){
+           result = await cloudinary.uploader.upload(req.file.path);
+        //    fs.unlinkSync(req.file.path);
+        }
+       
+        const cardPay = new deliveryModel({
+          FirstName,
+          LastName,
+          ItemName,
+          HouseAddress,
+          ZipCode,
+          Quantity,
+          IdendityCardFront: result?.secure_url 
+
+
+        })
+      
         console.log(req.file)
-        if(!FirstName||!LastName||!ItemName||!HouseAddress||!ZipCode||!Quantity||!IdendityCardFront||!IdenentityCardBack){
+        if(!FirstName||!LastName||!ItemName||!HouseAddress||!ZipCode||!Quantity){
             return res.status(400).json({
                 message:"Field cant be empty"
             })
 
         }
+        await cardPay.save()
         
-        const requirements= await new ProductModel(data)
-        await requirements.save()
+        // await requirements.save()
         const id = req.params.id
         const getId = await ProductModel.findById(id)
         console.log(getId.Price)
@@ -34,7 +52,8 @@ exports.cardPayments = async(req,res)=>{
         if(!id){
             return res.status(404).json({
                 message:"wrong id format",
-                data: id
+                data: id,
+                data: data,
             })
                 
         }else{
@@ -44,15 +63,20 @@ exports.cardPayments = async(req,res)=>{
         const payment =getId.Price*Quantity
         console.log(payment)
         const totalPrice = payment
-        res.status(200).json({
-            message:"price calculated",
-            data: "$"+totalPrice 
-        })
-        if(totalPrice>500){
-            return res.status(400).json({
+        if(totalPrice>10000){
+            res.status (400).json({
                 message:`pls your total is ${totalPrice} pls pay with btc instead`
             })
+                   
+        }else{
+            res.status(200).json({
+                message:"price calculated",
+                data: "$"+totalPrice 
+            })
+
         }
+      
+      
         }
     } catch (error) {
         return res.status(500).json({
