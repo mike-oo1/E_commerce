@@ -17,9 +17,10 @@ exports.signUp =async(req,res)=>{
             PhoneNumber
         }
 // validating the fields
-     if(!FirstName||!LastName ||!Email|| !Password|| !PhoneNumber){
+     if(!FirstName||!LastName ||!Email|| !Password|| !PhoneNumber||PhoneNumber.length<14){
          return res.status(400).json({
-            message:"field cant be left empty"
+            message:"field cant be left empty",
+            message:"invalid phone number",
          })            
         }
             const createdUser =await new userModel(data)    

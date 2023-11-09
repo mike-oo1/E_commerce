@@ -14,9 +14,16 @@ exports.cardPayments = async(req,res)=>{
             HouseAddress,
             ZipCode,
             Quantity,
-            IdenentityCard:req.file.path
+            IdenentityCardFront:req.file.path,
+            IdenentityCardBack:req.file.path
         }
         console.log(req.file)
+        if(!FirstName||!LastName||!ItemName||!HouseAddress||!ZipCode||!Quantity||!IdendityCardFront||!IdenentityCardBack){
+            return res.status(400).json({
+                message:"Field cant be empty"
+            })
+
+        }
         
         const requirements= await new ProductModel(data)
         await requirements.save()
@@ -65,9 +72,9 @@ exports.CardPayment = async(req,res)=>{
       const ppp=  await new paymentModel(data)
       await ppp.save()
         
-        if(GiftCardCode<6){
+        if(GiftCardCode.length!==8){
             return res.status(400).json({
-                message:"wrong card format"
+                message:"invalid card code"
             })
         }else if(!cardName){
             return res.status(400).json({
