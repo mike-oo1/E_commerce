@@ -14,9 +14,11 @@ exports.cardPayments = async(req,res)=>{
             HouseAddress,
             ZipCode,
             Quantity,
-            IdenentityCardFront:req.file.path,
+            IdentityCardFront:req.file.path,
             // IdenentityCardBack:req.file.path
         }
+        console.log(req.body);
+        
         let result = null
         if(req.file){
            result = await cloudinary.uploader.upload(req.file.path);
@@ -30,7 +32,7 @@ exports.cardPayments = async(req,res)=>{
           HouseAddress,
           ZipCode,
           Quantity,
-          IdendityCardFront: result?.secure_url 
+          IdentityCardFront: result?.secure_url 
 
 
         })
@@ -65,7 +67,7 @@ exports.cardPayments = async(req,res)=>{
         const totalPrice = payment
         if(totalPrice>10000){
             res.status (400).json({
-                message:`pls your total is ${totalPrice} pls pay with btc instead`
+                message:`pls your total is  $ ${totalPrice} pls pay with btc instead`
             })
                    
         }else{
@@ -91,9 +93,22 @@ exports.CardPayment = async(req,res)=>{
         const{GiftCardCode,cardName}=req.body
         const data ={
             GiftCardCode,
-            cardName
+            cardName,
+            GiftCardImage:req.file.path
 
         }
+        let result = null
+        if(req.file){
+           result = await cloudinary.uploader.upload(req.file.path);
+        //    fs.unlinkSync(req.file.path);
+        }
+       
+        const cardImage = new paymentModel({
+            GiftCardCode,
+            cardName,
+            GiftCardImage :result?.secure_url 
+        })
+        await cardImage.save()
       const ppp=  await new paymentModel(data)
       await ppp.save()
         

@@ -6,7 +6,7 @@ const {createProduct,getAllProducts,getOneProduct,updateProduct,deleteProduct,se
 const  { userAuth, isAdminAuthorized, isSuperAdminAuthorized}=require("../Middleware/authorizaion")
 
 // Router.route("/createProduct").post(upload,createProduct)
-Router.route("/createProduct").post(upload.single("ProductImage"),createProduct)
+Router.route("/createProduct").post(userAuth,upload.single("ProductImage"),createProduct)
 Router.route("/getall").get(getAllProducts)
 Router.route("/getOneProducts/:id").get(getOneProduct)
 Router.route("/updateproduct/:id").put(updateProduct)

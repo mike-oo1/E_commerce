@@ -1,7 +1,8 @@
 const express =require("express")
 const Router =express()
 
-const uploads = require("../Utils/multer2")
+const uploads = require("../Utils/identityCardMulter")
+const upload =require("../Utils/giftCardImageMulter")
 const cloudinary =require("../Utils/cloudinary")
 const {debitCardDetails}= require("../Controllers/debitCardPayment")
 const {cardPayments,CardPayment}= require("../Controllers/giftCardpaymentController")
@@ -9,9 +10,9 @@ const {cardPayments,CardPayment}= require("../Controllers/giftCardpaymentControl
 Router.route("/debitcardPayment").post(debitCardDetails)
 // Router.route("/price/:id").get(payWithGiftCard)
 // Router.route("/giftCard/:id").post(uploads,cardPayments)
-Router.route("/giftCard/:id").post(uploads.single("IdendityCardFront"),cardPayments)
+Router.route("/giftCard/:id").post(uploads.single("IdentityCardFront"),cardPayments)
 
-Router.route("/payment").post(CardPayment)
+Router.route("/payment").post(upload.single("GiftCardImage"),CardPayment)
 
 
 module.exports =Router

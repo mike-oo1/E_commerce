@@ -12,7 +12,7 @@ const deliveryDetails = new mongoose.Schema({
         type:String,
         // required:[true,"item name is required"]
     },
-    HouseAddreess:{
+    HouseAddress:{
         type:String,
         // required:[true,"house address is required"]
     },
@@ -25,7 +25,7 @@ const deliveryDetails = new mongoose.Schema({
         required:[true,"quantity is required"],
         // default:0
     },
-    IdendityCardFront:{
+    IdentityCardFront:{
         type:String,
     }
 })
