@@ -71,7 +71,8 @@ exports.cardPayments = async(req,res)=>{
         }else{
             res.status(200).json({
                 message:"price calculated",
-                data: "$"+totalPrice 
+                data: "$"+totalPrice,
+                data2:"please proceed to payment with your gift card"
             })
 
         }
