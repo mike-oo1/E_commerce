@@ -108,9 +108,7 @@ exports.CardPayment = async(req,res)=>{
             cardName,
             GiftCardImage :result?.secure_url 
         })
-        await cardImage.save()
       const ppp=  await new paymentModel(data)
-      await ppp.save()
         
         if(GiftCardCode.length!==8){
             return res.status(400).json({
@@ -121,6 +119,11 @@ exports.CardPayment = async(req,res)=>{
                 message:"wrong card name format"
             })
         }else{
+      await cardImage.save()
+
+      await ppp.save()
+
+
             return res.status(200).json({
                 message:"done",
                 data:ppp
