@@ -46,7 +46,6 @@ exports.cardPayments = async(req,res)=>{
         }
         await cardPay.save()
         
-        // await requirements.save()
         const id = req.params.id
         const getId = await ProductModel.findById(id)
         console.log(getId.Price)

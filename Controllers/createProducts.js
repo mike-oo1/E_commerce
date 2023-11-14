@@ -72,11 +72,12 @@ exports.getOneProduct= async(req,res)=>{
         const getOne= await productModel.findById(id)
         if(!getOne){
             return res.status(400).json({
-                message:"cannot find this product"
+                message:"cannot find this product",
+                message2:error.message
             })
         }else{
             return res.status(200).json({
-                message:"here is nthe product you searched for",
+                message:"here is the product you searched for",
                 data:getOne
             })
         }
@@ -88,42 +89,45 @@ exports.getOneProduct= async(req,res)=>{
 }
 
 
-exports.search = async(req,res)=>{
-    try {
-        const searchs= req.params.searchs
-        const {searchProduct} =req.body
-        const data ={
-            searchProduct
-        }
-        const letters =["a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"]
+// exports.search = async(req,res)=>{
+//     try {
+//         const searchs= req.params.searchs
+//         // const {searchProduct} =req.body
+//         // const data ={
+//         //     searchProduct
+//         // }
+//         const letters =["a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"]
         
         
-        const searchProducts =await productModel.find({letters},searchs)
-            // for(let i=0;i<searchProducts.length;i++){
-            //     if(searchProducts[i].startsWith("searchProducts")){
-            //         searchProducts.sort()
-            //         console.log(searchProducts[i])
-            //     }
-            // }
-            if(!searchProducts){
-                res.status(404).json({
-                    message:"what you searched for is not found"
-                })
-            }else if(searchProducts.includes(letters)){
-                return res.status(200).json({
-                    message:"here are the results of your search",
-                    data:searchProducts,
-                    data:data
-                })
-            }
+//         const searchProducts =await productModel.findById(searchs)
+//         //     for(let i=0;i<searchProducts.length;i++){
+//         //         if(searchProducts[i].startsWith("searchProducts")){
+//         //             searchProducts.sort()
+//         //             console.log(searchProducts[i])
+//         //         }
+//         //     }
+//             if(!searchProducts){
+//                 res.status(404).json({
+//                     message:"what you searched for is not found"
+//                 })
+//             }else if(searchProducts){
+//                 return res.status(200).json({
+//                     message:"here are the results of your search",
+//                     data:searchProducts,
+//                     data:letters
+//                 })
+//             }else{
+
+                
+//             }
         
         
-    } catch (error) {
-        return res.status(500).json({
-            message:error.message
-        })
-    }
-}
+//     } catch (error) {
+//         return res.status(500).json({
+//             message:error.message
+//         })
+//     }
+// }
 exports.updateProduct = async(req,res)=>{
     try {
         const data ={
