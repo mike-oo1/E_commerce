@@ -130,17 +130,30 @@ exports.getOneProduct= async(req,res)=>{
 // }
 exports.updateProduct = async(req,res)=>{
     try {
+        const{ProductName,ProductDescription,ProductSize,Price}=req.body
         const data ={
-            ProductName:req.body||ProductName, 
-            ProductDescription:req.body||ProductDescription,
-            ProductSize:req.body||ProductSize,
-            Price:req.body||Price,
+            ProductName, 
+            ProductDescription,
+            ProductSize,
+            Price,
             ProductImage:req.file
         }
-        
+        let result = null
+        if(req.file){
+           result = await cloudinary.uploader.upload(req.file.path);
+        //    fs.unlinkSync(req.file.path);
+        }
+   const Update= await new productModel({
+    ProductName, 
+    ProductDescription,
+    ProductSize,
+    Price,
+    ProductImage:req.file
+   })
+
         // const{}=req.body
         const id =req.params.id
-        const updateProduct = await  productModel.findByIdAndUpdate(id)
+        const updateProduct = await  productModel.findByIdAndUpdate(id,{new:true})
         // await cloudinary.uploader.upload("err,ProductImage")
         if(!updateProduct){
             return res.status(400).json({
@@ -151,7 +164,8 @@ exports.updateProduct = async(req,res)=>{
             // await data.pr
             return res.status(201).json({
                 message:"product updated successfully",
-                data:updateProduct
+                data1:Update,
+                // data2:updateProduct
             })
         }
     } catch (error) {

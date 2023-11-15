@@ -8,7 +8,7 @@ const  { userAuth, isAdminAuthorized, isSuperAdminAuthorized}=require("../Middle
 // Router.route("/createProduct").post(upload,createProduct)
 Router.route("/createProduct").post(userAuth,upload.single("ProductImage"),createProduct)
 Router.route("/getall").get(getAllProducts)
-Router.route("/getOneProducts/:id").get(getOneProduct)
+Router.route("/getOneProduct/:id").get(getOneProduct)
 Router.route("/updateproduct/:id").put(updateProduct)
 Router.route("/deleteproduct/:id").put(userAuth,isAdminAuthorized,isSuperAdminAuthorized,deleteProduct)
 // Router.route("/search/:searchs").get(search)

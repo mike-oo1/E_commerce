@@ -27,8 +27,13 @@ app.use("/api",router)
 app.use("/api",debitCardRoute)
 const port = process.env.PORT
 const DB = process.env.DATABASE
+console.log(DB)
 mongoose
-.connect(DB)
+.connect(DB,{
+    useUnifiedTopology:true,
+    useNewUrlParser:true
+})
+
 .then(()=>{
     console.log("database connected successfully")
 }).catch((error)=>{
