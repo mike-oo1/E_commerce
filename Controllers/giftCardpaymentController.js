@@ -1,6 +1,7 @@
 const paymentModel = require("../Models/giftCardPaymentModel")
 const deliveryModel = require("../Models/deliverymodel")
 const ProductModel = require("../Models/productModel")
+const cartModel =require("../Models/cartModel")
 const cloudinary =require("cloudinary")
 
 
@@ -86,6 +87,61 @@ exports.cardPayments = async(req,res)=>{
         })
     }
 }
+
+exports.addToCart= async(req,res)=>{
+    try {
+
+        const cart =[]
+        const id =req.params.id
+        const addtocart = await ProductModel.findById(id)
+        const cartProduct = await cartModel
+        // const carts = await cartMode5
+        cart.push(cartProduct,id)
+        // cart.push(cartProduct)
+        console.log(id);
+        
+        if(!cart){
+            return res.status(400).json({
+                messaage:"cannot add to cart"
+            })
+        }else{
+        addtocart.save()
+
+            return res.status(200).json({
+                message:"product added to cart successfully",
+                data:addtocart.length
+                // data2:cartProduct.push(cart)
+
+            })
+        }
+
+
+        
+    } catch (error) {
+        return res.status(500).json({
+            message:error.message
+        })
+    }
+}
+exports.deleteItemFromCart= async(req,res)=>{
+    try {
+        const cart =[]
+        const id =req.params.id
+        const getProductId = await ProductModel.findById(id)
+        const removeItem = await cartModel.findById(id)
+        cart.pop(id)
+        return res.status(200).json({
+            message:"product removed from cart successfully",
+            data:removeItem,
+            // data:getProductId.Price,
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message:error.message
+        })
+    }
+}
         
 exports.CardPayment = async(req,res)=>{
     try {
@@ -136,4 +192,25 @@ exports.CardPayment = async(req,res)=>{
     }
 }
 
- 
+ exports.getCart = async(req,res)=>{
+    try {
+        const productId =req.params.id
+        const getId = await ProductModel.findById(productId)
+        // const getCart =await cartModel.find()
+        if(!getId){
+            return res.status(404).json({
+                message:"cart is empty"
+            })
+        }else{
+            return res.status(200).json({
+                message:"cart",
+                // data:getCart,
+                data2:getId
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+ }

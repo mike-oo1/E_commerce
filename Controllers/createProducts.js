@@ -89,45 +89,7 @@ exports.getOneProduct= async(req,res)=>{
 }
 
 
-// exports.search = async(req,res)=>{
-//     try {
-//         const searchs= req.params.searchs
-//         // const {searchProduct} =req.body
-//         // const data ={
-//         //     searchProduct
-//         // }
-//         const letters =["a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"]
-        
-        
-//         const searchProducts =await productModel.findById(searchs)
-//         //     for(let i=0;i<searchProducts.length;i++){
-//         //         if(searchProducts[i].startsWith("searchProducts")){
-//         //             searchProducts.sort()
-//         //             console.log(searchProducts[i])
-//         //         }
-//         //     }
-//             if(!searchProducts){
-//                 res.status(404).json({
-//                     message:"what you searched for is not found"
-//                 })
-//             }else if(searchProducts){
-//                 return res.status(200).json({
-//                     message:"here are the results of your search",
-//                     data:searchProducts,
-//                     data:letters
-//                 })
-//             }else{
 
-                
-//             }
-        
-        
-//     } catch (error) {
-//         return res.status(500).json({
-//             message:error.message
-//         })
-//     }
-// }
 exports.updateProduct = async(req,res)=>{
     try {
         const{ProductName,ProductDescription,ProductSize,Price}=req.body
@@ -138,34 +100,20 @@ exports.updateProduct = async(req,res)=>{
             Price,
             ProductImage:req.file
         }
-        let result = null
-        if(req.file){
-           result = await cloudinary.uploader.upload(req.file.path);
-        //    fs.unlinkSync(req.file.path);
-        }
-   const Update= await new productModel({
-    ProductName, 
-    ProductDescription,
-    ProductSize,
-    Price,
-    ProductImage:req.file
-   })
-
-        // const{}=req.body
+        const update = await new productModel(data)
         const id =req.params.id
-        const updateProduct = await  productModel.findByIdAndUpdate(id,{new:true})
+        const updateProduct = await  productModel.findByIdAndUpdate(id,
+            {new:true})
         // await cloudinary.uploader.upload("err,ProductImage")
         if(!updateProduct){
             return res.status(400).json({
                 message:"cannot update this product with id "+id
             })
         }else{
-            
-            // await data.pr
+        await update.save()
             return res.status(201).json({
                 message:"product updated successfully",
-                data1:Update,
-                // data2:updateProduct
+                data:updateProduct
             })
         }
     } catch (error) {
@@ -186,7 +134,7 @@ exports.deleteProduct = async(req,res)=>{
      }else{
         return res.status(200).json({
             message:"product deleted successfully",
-            data:deleteProduct.$isDeleted
+            data:deleteProduct
         })
      }
 

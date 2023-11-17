@@ -17,7 +17,7 @@ exports.signUp =async(req,res)=>{
             PhoneNumber
         }
 // validating the fields
-     if(!FirstName||!LastName ||!Email|| !Password|| !PhoneNumber||PhoneNumber.length<14){
+     if(!FirstName||!LastName ||!Email|| !Password|| !PhoneNumber||PhoneNumber.length!==14){
          return res.status(400).json({
             message:"field cant be left empty",
             message:"invalid phone number",
@@ -84,7 +84,7 @@ exports.login = async(req,res)=>{
                 return res.status(201).json({
                     status:"successful",
                     message:`${check.FirstName}  your log in is successful`,
-                    data:check
+                    // data:check
                 })
 
             }
@@ -92,7 +92,9 @@ exports.login = async(req,res)=>{
   
     
         } catch (error) {
-           error.message
+           return res.status(500).json({
+            message:error.message
+           })
             
         }
     }
@@ -117,7 +119,7 @@ exports.userVerify = async(req,res)=>{
             })
         }else{
             return res.status(200).json({
-                message:"user has been verified"
+                message:`${registeredUser.FirstName}  your account have been verified successfully`
             })
         }
         
@@ -246,5 +248,15 @@ exports.getOneUser=async(req,res)=>{
         return res.status(500).json({
             message:error.message
         })
+    }
+}
+
+
+exports.deleteAUser= async(req,res)=>{
+    try {
+        const id = req.params.id
+        const deleteUser =await userModel.findByIdAndDelete(id)
+    } catch (error) {
+        
     }
 }
