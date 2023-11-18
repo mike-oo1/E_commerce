@@ -30,8 +30,8 @@ const DB = process.env.DATABASE
 console.log(DB)
 mongoose
 .connect(DB,{
-    useUnifiedTopology:true,
-    useNewUrlParser:true
+   useUnifiedTopology:true,
+   useNewUrlParser:true
 })
 
 .then(()=>{
