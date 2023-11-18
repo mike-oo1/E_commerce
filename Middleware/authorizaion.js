@@ -33,7 +33,7 @@ console.log(req.userId)
     if (user.isAdminAuthorized) {
       next()
     } else {
-      res.status(401).json({ message: "not an editor" })
+      res.status(401).json({ message: "not an admin" })
     }
   } catch (error) {
     res.status(500).json({ message: error.message })
