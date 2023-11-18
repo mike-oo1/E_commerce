@@ -5,13 +5,12 @@ const cloudinary=require("../Utils/cloudinary")
 const {createProduct,getAllProducts,getOneProduct,updateProduct,deleteProduct,search}= require("../Controllers/createProducts")
 const  { userAuth, isAdminAuthorized, isSuperAdminAuthorized}=require("../Middleware/authorizaion")
 
-// Router.route("/createProduct").post(upload,createProduct)
 Router.route("/createProduct").post(userAuth,upload.single("ProductImage"),createProduct)
 Router.route("/getall").get(getAllProducts)
 Router.route("/getOneProduct/:id").get(getOneProduct)
 Router.route("/updateproduct/:id").put(updateProduct)
 Router.route("/deleteproduct/:id").put(userAuth,isAdminAuthorized,isSuperAdminAuthorized,deleteProduct)
-// Router.route("/search/:searchs").get(search)
+
 
 
 module.exports = Router
