@@ -16,7 +16,6 @@ exports.cardPayments = async(req,res)=>{
             ZipCode,
             Quantity,
             IdentityCardFront:req.file.path,
-            // IdenentityCardBack:req.file.path
         }
         console.log(req.body);
         
@@ -34,6 +33,7 @@ exports.cardPayments = async(req,res)=>{
           ZipCode,
           Quantity,
           IdentityCardFront: result?.secure_url 
+
 
 
         })

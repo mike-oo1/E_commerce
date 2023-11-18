@@ -25,10 +25,10 @@ const deliveryDetails = new mongoose.Schema({
         required:[true,"quantity is required"],
         // default:0
     },
-    IdentityCardFront:{
+    IdentityCard:{
         type:String,
     }
-})
+},{timestamps:true})
 
 const delivery = mongoose.model("delivery",deliveryDetails)
 
