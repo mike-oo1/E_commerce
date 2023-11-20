@@ -5,7 +5,7 @@ dotenv.configDotenv({path:"./Config/config.env"})
 
 const cors=require("cors")
 require ("dotenv").config()
-// dotenv.configDotenv({path:"./Config/config.env"})
+
 
 
 const route=require("./Router/productsRouter")
@@ -20,7 +20,7 @@ app.use(cors({
     methods: ["GET"]
 }))
 app.use("/Uploads", express.static(__dirname + "/Uploads"))
-// app.use("/paymentPictures", express.static(__dirname + "/paymentPictures"))
+
 
 app.use("/api",route)
 app.use("/api",router)
