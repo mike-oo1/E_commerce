@@ -19,7 +19,7 @@ const cartModel = new mongoose.Schema({
         ProductImage:{
             type:String
          },
-         Quantity:{
+         count:{
             type:Number,
             // default:0
          }

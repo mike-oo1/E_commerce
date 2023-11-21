@@ -15,9 +15,9 @@ exports.cardPayments = async(req,res)=>{
             HouseAddress,
             ZipCode,
             Quantity,
-            IdentityCardFront:req.file.path,
+            IdentityCard:req.file.path,
         }
-        console.log(req.body);
+        console.log(req.body)
         
         let result = null
         if(req.file){
@@ -32,7 +32,7 @@ exports.cardPayments = async(req,res)=>{
           HouseAddress,
           ZipCode,
           Quantity,
-          IdentityCardFront: result?.secure_url 
+          IdentityCard: result?.secure_url 
 
 
 
@@ -95,9 +95,7 @@ exports.addToCart= async(req,res)=>{
         const id =req.params.id
         const addtocart = await ProductModel.findById(id)
         const cartProduct = await cartModel
-        // const carts = await cartMode5
-        cart.push(cartProduct,id)
-        // cart.push(cartProduct)
+
         console.log(id);
         
         if(!cart){

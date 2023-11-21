@@ -1,4 +1,5 @@
 const userModel = require("../Models/onBoardModel")
+const {generateDynamicEmail}=require("../Utils/mailTemplate")
 require("dotenv").config()
 const bcryptjs = require("bcryptjs")
 const jwt =require("jsonwebtoken")
@@ -33,12 +34,13 @@ exports.signUp =async(req,res)=>{
      const subject ="ACCOUNT CREATED"
      const link =`${req.protocol}: //${req.get("host")}/welcome on board${createdUser._id}/${newToken}`
      const message =`click on this link${link} to verify, kindly note that this link will expire after 5 minutes`
+     const html= await generateDynamicEmail(link)
      mailsender(
         {
             from:"gmail",
             email:createdUser.Email,
             subject:`WELCOME TO BDSM ARENA`,
-            message:link
+            
         }
     )
  
@@ -256,7 +258,18 @@ exports.deleteAUser= async(req,res)=>{
     try {
         const id = req.params.id
         const deleteUser =await userModel.findByIdAndDelete(id)
+        if(!deleteUser){
+            return res.status(400).json({
+                message:"unable to delete thiss user"
+            })
+        }else{
+            return res.status(200).json({
+                message:"user deleted"
+            })
+        }
     } catch (error) {
-        
+        return res.status(500).json({
+            message:error.message
+        })
     }
 }
