@@ -7,15 +7,15 @@ const cloudinary =require("../Utils/cloudinary")
 const  { userAuth, isAdminAuthorized, isSuperAdminAuthorized}=require("../Middleware/authorizaion")
 
 
-const {cardPayments,CardPayment,addToCart,deleteItemFromCart,getCart}= require("../Controllers/giftCardpaymentController")
+const {cardPayments,CardPayment,userCart,emptyCart,getUserCart}= require("../Controllers/giftCardpaymentController")
 const{BtcPayment}=require("../Controllers/btcPayment")
 
 Router.route("/giftCard/:id").post(uploads.single("IdentityCard"),cardPayments)
 
 Router.route("/payment").post(userAuth,upload.single("GiftCardImage"),CardPayment)
-Router.route("/remove/:id").post(deleteItemFromCart)
-Router.route("/cart/:id").post(addToCart)
-Router.route("/cartview").get(getCart)
+Router.route("/remove/:id").post(emptyCart)
+Router.route("/cart/:id").post(userCart)
+Router.route("/cartview").get(getUserCart)
 Router.route("/btcpay/:id").post(userAuth,uploader.single("IdentityCard"),BtcPayment)
 // Router.route("/viewcart").get(viewCart)
 

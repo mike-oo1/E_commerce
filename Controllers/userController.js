@@ -53,6 +53,9 @@ exports.signUp =async(req,res)=>{
         
     
 
+        
+       
+
     } catch (error) {
         return res.status(500).json({
             message:error.message
@@ -159,6 +162,8 @@ exports.changePassword =async(req,res)=>{
     try {
         const {Password}=req.body
         const id =req.params.id
+        const salt =await bcryptjs.genSaltSync(10)
+        const hash = await bcryptjs.hashSync(Password,salt)
         const resetDetails ={
             Password:hash
         }
@@ -169,24 +174,23 @@ exports.changePassword =async(req,res)=>{
                 message:"unable to change your password"
             })
         }else{
-            res.status(200).json({
-                status:"success",
-                message:"password changed successfully",
-                data:result
+            const createToken =jwt.sign({
+                Password
+            },process.env.JWT_TOKEN,{expiresIn :"1d"})
+            check.Token =createToken
+            const SAVE = await check.save()
+            res.status(201).json({
+                status:"successful",
+                message:"password changed  successfully",
+                data:SAVE
             })
+           
         }   
-        const createToken =jwt.sign({
-            Password
-        },process.env.JWT_TOKEN,{expiresIn :"1d"})
-        check.Token =createToken
-        const SAVE = await check.save()
-        res.status(201).json({
-            status:"successful",
-            message:"password changed  successfully",
-            data:SAVE
-        })
+      
     } catch (error) {
-        
+        return res.status(500).json({
+            message:error.message
+        })
     }
 }
 exports.signOut= async(req,res)=>{

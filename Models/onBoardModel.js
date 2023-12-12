@@ -37,6 +37,10 @@ const userModel = new mongoose.Schema({
 
     Token:{
         type:String
+    },
+    UserCart:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'AddToCart'
     }
 
 })

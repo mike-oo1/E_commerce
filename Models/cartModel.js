@@ -16,13 +16,16 @@ const cartModel = new mongoose.Schema({
             type:String,
             // required:[true,"product size is required"]
         },
-        ProductImage:{
-            type:String
-         },
-         count:{
-            type:Number,
-            // default:0
+        
+         Cart:[{
+            type:mongoose.Schema.Types.ObjectId,
+            link:"order"
+         }],
+         User:{
+           type:mongoose.Schema.Types.ObjectId ,
+           ref:"users"
          }
+
     },{timestamps:true})
 
 const Cart = mongoose.model("AddToCart",cartModel)

@@ -70,14 +70,12 @@ exports.BtcPayment = async(req,res)=>{
                    
         }else{
             res.status(200).json({
-                message:"price calculated",
+                message:"here is the total of your order",
                 data: "$"+totalPrice,
                 data2:"click here to view the link"
             })
 
         }
-      
-      
         }
     } catch (error) {
         return res.status(500).json({

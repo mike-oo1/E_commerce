@@ -19,9 +19,9 @@ const productModel = new mongoose.Schema({
     ProductImage:{
         type:String
      },
-     Quantity:{
-        type:Number,
-        default:0
+     Cart:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"AddToCart"
      }
 },{timestamps:true})
 
