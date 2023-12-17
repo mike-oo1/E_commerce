@@ -70,7 +70,7 @@ exports.cardPayments = async(req,res)=>{
             res.status (400).json({
                 message:`pls your total is  $ ${totalPrice} pls pay with btc instead`
             })
-                   
+                    
         }else{
             res.status(200).json({
                 message:"price calculated",
@@ -89,105 +89,55 @@ exports.cardPayments = async(req,res)=>{
     }
 }
 
-// exports.addToCart= async(req,res)=>{
-//     try {
-
-//         const cart =[]
-//         const id =req.params.id
-//         const addtocart = await ProductModel.findById(id)
-//         const cartProduct = await cartModel
-
-//         console.log(id);
-        
-//         if(!cart){
-//             return res.status(400).json({
-//                 messaage:"cannot add to cart"
-//             })
-//         }else{
-//         addtocart.save()
-
-//             return res.status(200).json({
-//                 message:"product added to cart successfully",
-//                 data:addtocart.length
-//                 // data2:cartProduct.push(cart)
-
-//             })
-//         }
-
-
-        
-//     } catch (error) {
-//         return res.status(500).json({
-//             message:error.message
-//         })
-//     }
-// }
-// exports.deleteItemFromCart= async(req,res)=>{
-//     try {
-//         const cart =[]
-//         const id =req.params.id
-//         const getProductId = await ProductModel.findById(id)
-//         const removeItem = await cartModel.findById(id)
-//         cart.pop(id)
-//         return res.status(200).json({
-//             message:"product removed from cart successfully",
-//             data:removeItem,
-//             // data:getProductId.Price,
-//         })
-
-//     } catch (error) {
-//         return res.status(500).json({
-//             message:error.message
-//         })
-//     }
-// }
-
 exports.userCart = async (req, res) => {
-    const { cart } = req.body;
-    const { _id } = req.user;
+    const { cart } = req.body
+    // const  id = req.user
+    // console.log(req.user)
+    const id = req.params.id
     try {
-      let products = [];
-      const user = await User.findById(_id);
+      let products = []
+      const user = await User.findById(id)
       //check if al ready have product in cart
-      const alreadyExistCart = await Cart.findOne({ orderBy: user._id });
+      const alreadyExistCart = await Cart.findOne({ orderBy: user.id })
   
       for (let i = 0; i < cart.length; i++) {
         let object = {};
-        object.product = cart[i]._id;
+        object.product = cart[i].id;
         object.count = cart[i].count;
-        let getPrice = await ProductModel.findById(cart[i]._id).select("price").exec();
-        object.price = getPrice.Price;
-        products.push(object);
+        let getPrice = await ProductModel.findById(cart[i].id).select("price").exec()
+        object.price = getPrice.Price
+        products.push(object)
       }
-      let cartTotal = 0;
+      let cartTotal = 0
       for (let i = 0; i < products.length; i++) {
-        cartTotal += products[i].price * products[i].count;
+        cartTotal += products[i].price * products[i].count
       }
-      //console.log(cartTotal);
-      // console.log(products);
+      //console.log(cartTotal)
+      // console.log(products)
       if (alreadyExistCart) {
-        await Cart.findByIdAndDelete(alreadyExistCart._id);
+        await Cart.findByIdAndDelete(alreadyExistCart.id)
       }
       let newCart = await Cart.create({
         products,
         cartTotal,
-        orderBy: user?._id,
-      });
+        orderBy: user?.id,
+      })
       res.json(newCart);
     } catch (error) {
         return res.status(500).json({
             message: error.message
         })
     }
-  };
+  }
   
   exports.getUserCart = async (req, res) => {
-    const { _id } = req.user;
+    const id  = req.params.id
+    console.log(id)
     try {
-      const cart = await Cart.findOne({ orderBy: _id }).populate(
+      const cart = await Cart.findOne({ orderBy: id }).populate(
         "products.product"
       );
-      res.json(cart);
+      res.json(cart)
     } catch (error) {
         return res.status(500).json({
             message: error.message
@@ -196,13 +146,13 @@ exports.userCart = async (req, res) => {
 };
   
   exports.emptyCart =async (req, res) => {
-    const { _id } = req.user;
+    const { id } = req.user;
     try {
-      const cart = await Cart.findOneAndDelete({ orderBy: _id });
+      const cart = await Cart.findOneAndDelete({ orderBy: id })
       res.json({
         message: "deleted cart",
-        cart,
-      });
+        data:cart,
+      })
     } catch (error) {
         return res.status(500).json({
             message: error.message

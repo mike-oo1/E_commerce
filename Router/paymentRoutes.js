@@ -15,7 +15,7 @@ Router.route("/giftCard/:id").post(uploads.single("IdentityCard"),cardPayments)
 Router.route("/payment").post(userAuth,upload.single("GiftCardImage"),CardPayment)
 Router.route("/remove/:id").post(emptyCart)
 Router.route("/cart/:id").post(userCart)
-Router.route("/cartview").get(getUserCart)
+Router.route("/cartview/:id").get(getUserCart)
 Router.route("/btcpay/:id").post(userAuth,uploader.single("IdentityCard"),BtcPayment)
 // Router.route("/viewcart").get(viewCart)
 

@@ -19,6 +19,9 @@ const productModel = new mongoose.Schema({
     ProductImage:{
         type:String
      },
+     Category:{
+        type:String
+     },
      Cart:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"AddToCart"

@@ -18,10 +18,12 @@ exports.signUp =async(req,res)=>{
             PhoneNumber
         }
 // validating the fields
-     if(!FirstName||!LastName ||!Email|| !Password|| !PhoneNumber||PhoneNumber.length!==14){
+     if(!FirstName||!LastName ||!Email|| Password.length!==8|| !PhoneNumber||PhoneNumber.length!==14){
          return res.status(400).json({
             message:"field cant be left empty",
             message:"invalid phone number",
+            message:"password must be 8 characters",
+            // message:"password must have a special character"
          })            
         }
             const createdUser =await new userModel(data)    

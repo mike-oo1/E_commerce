@@ -1,14 +1,16 @@
+const { where } = require("../Models/onBoardModel");
 const productModel =require("../Models/productModel")
 const cloudinary =require("cloudinary")
 
 exports.createProduct = async ( req, res ) => {
     try {
-        const { ProductName, ProductDescription, ProductSize,Price } = req.body;
+        const { ProductName, ProductDescription, ProductSize,Price,Category } = req.body;
         const data = {
             ProductName,
             ProductDescription,
             ProductSize,
             Price,
+            Category,
             ProductImage:req.file.path
     
         } 
@@ -46,6 +48,133 @@ exports.createProduct = async ( req, res ) => {
     } catch (err) {
         res.status( 500 ).json( {
             message: err.message
+        })
+    }
+}
+
+exports.createMenProducts = async(req,res)=>{
+    try {
+        const { ProductName, ProductDescription, ProductSize,Price,Category } = req.body;
+        const data = {
+            ProductName,
+            ProductDescription,
+            ProductSize,
+            Price,
+            Category,
+            ProductImage:req.file.path
+    
+        } 
+        let result = null
+        if(req.file){
+           result = await cloudinary.uploader.upload(req.file.path);
+        //    fs.unlinkSync(req.file.path);
+        }
+       
+        const newMenProduct = new productModel({
+          ProductName,
+          ProductDescription,
+          ProductSize,
+          Price:"$",
+          Category,
+          ProductImage: result?.secure_url 
+        })
+      if(!newMenProduct){
+        return res.status(400).json({
+            message:"cannot create this product"
+        })
+      }else{
+        newMenProduct.save()
+        return res.status(201).json({
+            message:"created successfully",
+            data:newMenProduct
+        })
+      }
+       
+    } catch (error) {
+        res.status( 500 ).json( {
+            message: error.message
+        })
+    }
+}
+exports.createWomenProduct = async(req,res)=>{
+    try {
+        const { ProductName, ProductDescription, ProductSize,Price,Category } = req.body;
+        const data = {
+            ProductName,
+            ProductDescription,
+            ProductSize,
+            Price,
+            Category,
+            ProductImage:req.file.path
+    
+        } 
+        let result = null
+        if(req.file){
+           result = await cloudinary.uploader.upload(req.file.path);
+        //    fs.unlinkSync(req.file.path);
+        }
+       
+        const newWomenProduct = new productModel({
+          ProductName,
+          ProductDescription,
+          ProductSize,
+          Price:"$",
+          Category,
+          ProductImage: result?.secure_url 
+        })
+      if(!newWomenProduct){
+        return res.status(400).json({
+            message:"cannot create this product"
+        })
+      }else{
+        newMenProduct.save()
+        return res.status(201).json({
+            message:"created successfully",
+            data:newWomenProduct
+        })
+      }
+       
+    } catch (error) {
+        res.status( 500 ).json( {
+            message: error.message
+        })
+    }
+}
+exports.getAllMenProduct=async(req,res)=>{
+    try {
+        const allMenProduct = await productModel.find({Category:"Men"})
+        if(!allMenProduct){
+            return res.status(404).json({
+                message:"no men product available to show"
+            })
+        }else{
+            return res.status(200).json({
+                message:"here are all men products",
+                data:allMenProduct
+            })
+        }
+    } catch (error) {
+        res.status( 500 ).json( {
+            message: error.message
+        })
+    }
+}
+exports.getAllWomenProduct=async(req,res)=>{
+    try {
+        const allWomenProduct = await productModel.find({Category:"Women"})
+        if(!allWomenProduct){
+            return res.status(404).json({
+                message:"no women product available to show"
+            })
+        }else{
+            return res.status(200).json({
+                message:"here are all women products",
+                data:allWomenProduct
+            })
+        }
+    } catch (error) {
+        res.status( 500 ).json( {
+            message: error.message
         })
     }
 }
