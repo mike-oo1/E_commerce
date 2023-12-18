@@ -1,7 +1,7 @@
 const express =require("express")
 const mongoose =require("mongoose")
 const dotenv =require("dotenv")
-dotenv.configDotenv({path:"./Config/config.env"})
+dotenv.configDotenv({path:"./config.env"})
 
 const cors=require("cors")
 require ("dotenv").config()
