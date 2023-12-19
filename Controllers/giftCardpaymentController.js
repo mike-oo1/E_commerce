@@ -91,9 +91,8 @@ exports.cardPayments = async(req,res)=>{
 
 exports.userCart = async (req, res) => {
     const { cart } = req.body
-    // const  id = req.user
-    // console.log(req.user)
-    const id = req.params.id
+    const  {id} = req.user
+    console.log(req.user)
     try {
       let products = []
       const user = await User.findById(id)
