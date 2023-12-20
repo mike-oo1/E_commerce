@@ -25,6 +25,10 @@ exports.signUp =async(req,res)=>{
             message:"password must be 8 characters",
             // message:"password must have a special character"
          })            
+        }else if(Email==Email){
+            return res.status(300).json({
+                message:`this email  ${Email} is associated with a bdsm arena account, please use a unique email`
+            })
         }
             const createdUser =await new userModel(data)    
             // generating a token for user
@@ -42,6 +46,9 @@ exports.signUp =async(req,res)=>{
             from:"gmail",
             email:createdUser.Email,
             subject:`WELCOME TO BDSM ARENA`,
+            message:message,
+
+
             
         }
     )

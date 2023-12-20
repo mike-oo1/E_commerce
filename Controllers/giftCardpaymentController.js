@@ -91,11 +91,11 @@ exports.cardPayments = async(req,res)=>{
 
 exports.userCart = async (req, res) => {
     const { cart } = req.body
-    const  {id} = req.user
-    console.log(req.user)
+    const  id = req.params.id
+    // console.log(id)
     try {
       let products = []
-      const user = await User.findById(id)
+      const user = await User.findById({id})
       //check if al ready have product in cart
       const alreadyExistCart = await Cart.findOne({ orderBy: user.id })
   
@@ -103,7 +103,7 @@ exports.userCart = async (req, res) => {
         let object = {};
         object.product = cart[i].id;
         object.count = cart[i].count;
-        let getPrice = await ProductModel.findById(cart[i].id).select("price").exec()
+        let getPrice = await ProductModel.findById(cart[i]._id).select("price").exec()
         object.price = getPrice.Price
         products.push(object)
       }
@@ -114,7 +114,7 @@ exports.userCart = async (req, res) => {
       //console.log(cartTotal)
       // console.log(products)
       if (alreadyExistCart) {
-        await Cart.findByIdAndDelete(alreadyExistCart.id)
+        await Cart.findByIdAndDelete(alreadyExistCart._id)
       }
       let newCart = await Cart.create({
         products,
@@ -136,6 +136,11 @@ exports.userCart = async (req, res) => {
       const cart = await Cart.findOne({ orderBy: id }).populate(
         "products.product"
       );
+      if(!cart){
+        return res.status(404).json({
+            message:`id ${id} is not a cart id`
+        })
+      }
       res.json(cart)
     } catch (error) {
         return res.status(500).json({
@@ -145,10 +150,10 @@ exports.userCart = async (req, res) => {
 };
   
   exports.emptyCart =async (req, res) => {
-    const { id } = req.user;
+    const  id  = req.user;
     try {
       const cart = await Cart.findOneAndDelete({ orderBy: id })
-      res.json({
+    return res.status(200).json({
         message: "deleted cart",
         data:cart,
       })
@@ -209,25 +214,3 @@ exports.CardPayment = async(req,res)=>{
     }
 }
 
- exports.getCart = async(req,res)=>{
-    try {
-        const productId =req.params.id
-        const getId = await ProductModel.findById(productId)
-        // const getCart =await cartModel.find()
-        if(!getId){
-            return res.status(404).json({
-                message:"cart is empty"
-            })
-        }else{
-            return res.status(200).json({
-                message:"cart",
-                // data:getCart,
-                data2:getId
-            })
-        }
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message
-        })
-    }
- }
